@@ -101,6 +101,14 @@
     }
 
     document.getElementById('login_button').addEventListener('click', function () {
+        if (document.getElementById('login-nickname').value.length === 0) {
+            alert("введите ник");
+            return;
+        }
+        if (document.getElementById('login-password').value.length === 0) {
+            alert("введите пароль");
+            return;
+        }
         fetch(host + 'login', {
             method: 'POST',
             headers: {
@@ -126,6 +134,14 @@
 
 
     document.getElementById('register_button').addEventListener('click', function () {
+        if (document.getElementById('register-nickname').value.length === 0) {
+            alert("введите ник");
+            return;
+        }
+        if (document.getElementById('register-password').value.length === 0) {
+            alert("введите пароль");
+            return;
+        }
         fetch(host + 'register', {
             method: 'POST',
             headers: {

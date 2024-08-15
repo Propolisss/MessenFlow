@@ -142,10 +142,10 @@ func GetUsersHandler(w http.ResponseWriter, r *http.Request) {
 			users = append(users, login)
 		}
 		w.Header().Set("Content-Type", "application/json")
-		respose := Response{
+		response := Response{
 			Users: users,
 		}
-		json.NewEncoder(w).Encode(respose)
+		json.NewEncoder(w).Encode(response)
 	}
 }
 
