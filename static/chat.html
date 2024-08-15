@@ -1,0 +1,52 @@
+<!-- templates/chat.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat {{.ChatID}}</title>
+</head>
+<body>
+<h1>Chat with ID: {{.ChatID}}</h1>
+<input type="text" id="message" autocomplete="off"/>
+<button onclick="sendMessage()">Send</button>
+<div id="chatbox"></div>
+</body>
+<script>
+    const host = 'http://localhost:8080/';
+    const url = host + `get_messages?chatID=${"{{.ChatID}}"}`;
+    console.log(url);
+    fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log(data);
+                var chatbox = document.getElementById("chatbox");
+                if (data.messages != null) {
+                    data.messages.forEach(mess => {
+                        chatbox.innerHTML += "<b>" + decodeURIComponent(mess.user) + ":</b> " + mess.message + "<br>";
+                    });
+                }
+            })
+            .catch(error => {
+                alert(error);
+            });
+
+
+    const chatID = "{{.ChatID}}";
+    const conn = new WebSocket('ws://localhost:8080/ws?chatID=' + chatID);
+    conn.onmessage = function (event) {
+        var message = JSON.parse(event.data);
+        var chatbox = document.getElementById("chatbox");
+        chatbox.innerHTML += "<b>" + decodeURIComponent(message.user) + ":</b> " + message.message + "<br>";
+    };
+
+    function sendMessage() {
+        var input = document.getElementById("message");
+        conn.send(input.value);
+        input.value = "";
+    }
+</script>
+</html>
