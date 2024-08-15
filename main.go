@@ -108,13 +108,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		http.SetCookie(w, &http.Cookie{
-			Name:  "user_login",
-			Value: url.QueryEscape(user.Login),
-			Path:  "/",
-		})
-
-		http.Redirect(w, r, "http://localhost:8080/welcome", 302)
+		http.Redirect(w, r, "http://192.168.1.14:8080/welcome", 302)
 	} else {
 		http.Error(w, "wrong method", http.StatusBadRequest)
 	}
@@ -126,20 +120,15 @@ type Response struct {
 
 func GetUsersHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
-		loginCookie, err := r.Cookie("user_login")
-		if err != nil {
-			http.Error(w, "Unauthorized", http.StatusUnauthorized)
-			return
-		}
-		fmt.Println(loginCookie)
-		userLogin, err := url.QueryUnescape(loginCookie.Value)
-		if err != nil {
-			return
-		}
-		rows, err := db.Query("SELECT login FROM users WHERE login <> ?", userLogin)
+		login := r.URL.Query().Get("user_login")
+		fmt.Println(login)
+
+		rows, err := db.Query("SELECT login FROM users WHERE login <> ?", login)
+
 		if err != nil {
 			log.Fatal(err)
 		}
+
 		var users []string
 		defer rows.Close()
 		for rows.Next() {
@@ -197,15 +186,14 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "chatID missing", http.StatusBadRequest)
 		return
 	}
-
 	userLogin, err := r.Cookie("user_login")
 	if err != nil {
 		http.Error(w, "Unauthorized", http.StatusUnauthorized)
 		return
 	}
 
-	user := userLogin.Value
-
+	user, err := url.QueryUnescape(userLogin.Value)
+	fmt.Println(user)
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		log.Println("Failed to upgrade to WebSocket:", err)
@@ -327,7 +315,7 @@ func main() {
 	http.HandleFunc("/login", LoginHandler)
 	http.HandleFunc("/get_users", GetUsersHandler)
 	http.HandleFunc("/get_messages", GetMessagesHandler)
-	err = http.ListenAndServe(":8080", nil)
+	err = http.ListenAndServe("192.168.1.14:8080", nil)
 	if err != nil {
 		log.Fatal(err)
 	}

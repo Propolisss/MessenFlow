@@ -66,23 +66,14 @@
 </div>
 
 <script>
-    const host = 'http://localhost:8080/';
-    console.log(document.cookie);
-    function getCookie() {
-        return document.cookie.split('; ').reduce((acc, item) => {
-            const [name, value] = item.split('=');
-            acc[name] = value;
-            return acc;
-        }, {});
-    }
-    const curr_login = decodeURIComponent(getCookie().user_login);
-    console.log(curr_login)
+    const host = 'http://192.168.1.14:8080/';
+    const curr_login = decodeURIComponent(sessionStorage.getItem('user_login'));
     function generateChatID(user1, user2) {
         // Сортируем имена по алфавиту, чтобы порядок не влиял на chatID
         return [user1, user2].sort().join('-');
     }
-
-    fetch(host + 'get_users')
+    const url = host + `get_users?user_login=${sessionStorage.getItem('user_login')}`;
+    fetch(url)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Ошибка: ' + response.status);

@@ -88,7 +88,7 @@
 </div>
 
 <script>
-    const host = 'http://localhost:8080/';
+    const host = 'http://192.168.1.14:8080/';
 
     function toggleForm(formType) {
         if (formType === 'login') {
@@ -112,6 +112,7 @@
             })
         }).then(response => {
             if (response.ok) {
+                sessionStorage.setItem('user_login', decodeURIComponent(document.getElementById('login-nickname').value));
                 window.location.href = host + 'welcome';
             } else {
                 return response.text().then(text => {

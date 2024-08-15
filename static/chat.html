@@ -11,7 +11,7 @@
 <div id="chatbox"></div>
 </body>
 <script>
-    const host = 'http://localhost:8080/';
+    const host = 'http://192.168.1.14:8080/';
     const url = host + `get_messages?chatID=${"{{.ChatID}}"}`;
     console.log(url);
     fetch(url)
@@ -36,7 +36,8 @@
 
 
     const chatID = "{{.ChatID}}";
-    const conn = new WebSocket('ws://localhost:8080/ws?chatID=' + chatID);
+    document.cookie = `user_login=${encodeURIComponent(sessionStorage.getItem('user_login'))}; path=/`;
+    const conn = new WebSocket('ws://192.168.1.14:8080/ws?chatID=' + chatID);
     conn.onmessage = function (event) {
         var message = JSON.parse(event.data);
         var chatbox = document.getElementById("chatbox");
