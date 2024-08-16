@@ -31,6 +31,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 
 	user, err := url.QueryUnescape(userLogin.Value)
 	fmt.Println(user)
+
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		log.Println("Failed to upgrade to WebSocket:", err)
@@ -44,7 +45,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 
 var chatConnections = make(map[string][]*websocket.Conn)
 
-func handleConnection(conn *websocket.Conn, chatID string, user string) {
+func handleConnection(conn *websocket.Conn, chatID, user string) {
 	chatConnections[chatID] = append(chatConnections[chatID], conn)
 	fmt.Println(chatConnections[chatID])
 	for {
@@ -54,12 +55,18 @@ func handleConnection(conn *websocket.Conn, chatID string, user string) {
 			removeConnection(conn, chatID)
 			break
 		}
-		log.Printf("Received message in chat %s from user %s: %s", chatID, user, string(p))
-		_, err = db.DB.Exec("INSERT INTO messages (chatID, user, message) VALUES(?, ?, ?)", chatID, user, string(p))
+		var resp models.ResponseFromClient
+		err = json.Unmarshal(p, &resp)
+		if err != nil {
+			fmt.Println("Error parsing JSON:", err)
+			continue
+		}
+		log.Printf("Received message in chat %s from user %s: %s", chatID, user, resp.Message)
+		_, err = db.DB.Exec("INSERT INTO messages (chatID, user, message, time) VALUES(?, ?, ?, ?)", chatID, user, resp.Message, resp.Time)
 		if err != nil {
 			log.Fatal(err)
 		}
-		broadcastMessage(chatID, user, string(p))
+		broadcastMessage(chatID, user, resp.Message, resp.Time)
 	}
 }
 
@@ -73,10 +80,11 @@ func removeConnection(conn *websocket.Conn, chatID string) {
 	}
 }
 
-func broadcastMessage(chatID string, user string, message string) {
+func broadcastMessage(chatID, user, message, time string) {
 	msg := models.Message{
 		User:    user,
 		Message: message,
+		Time:    time,
 	}
 	jsonMsg, err := json.Marshal(msg)
 	if err != nil {

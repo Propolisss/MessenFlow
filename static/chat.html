@@ -3,12 +3,101 @@
 <html>
 <head>
     <title>Chat {{.ChatID}}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        #chatbox {
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .message {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            position: relative;
+        }
+
+        .message:hover {
+            background-color: #f9f9f9;
+        }
+
+        .message .user {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .message .time {
+            color: #999;
+            font-size: 0.8em;
+        }
+
+        .message .text {
+            color: #555;
+        }
+
+        .message .actions {
+            display: none;
+            position: absolute;
+            top: 5px;
+            right: 5px;
+        }
+
+        .message:hover .actions {
+            display: block;
+        }
+
+        .message .actions button {
+            margin-left: 5px;
+            padding: 3px 8px;
+            border: none;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.8em;
+        }
+
+        .message .actions button:hover {
+            background-color: #0056b3;
+        }
+
+        input[type="text"] {
+            width: calc(100% - 100px);
+            padding: 10px;
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
 <h1>Chat with ID: {{.ChatID}}</h1>
+<div id="chatbox"></div>
 <input type="text" id="message" autocomplete="off"/>
 <button onclick="sendMessage()">Send</button>
-<div id="chatbox"></div>
 </body>
 <script>
     const host = 'http://192.168.1.14:8080/';
@@ -23,10 +112,9 @@
             })
             .then(data => {
                 console.log(data);
-                var chatbox = document.getElementById("chatbox");
                 if (data.messages != null) {
                     data.messages.forEach(mess => {
-                        chatbox.innerHTML += "<b>" + decodeURIComponent(mess.user) + ":</b> " + mess.message + "<br>";
+                        addMessage(mess.user, mess.time, mess.message);
                     });
                 }
             })
@@ -34,20 +122,57 @@
                 alert(error);
             });
 
-
     const chatID = "{{.ChatID}}";
     document.cookie = `user_login=${encodeURIComponent(sessionStorage.getItem('user_login'))}; path=/`;
     const conn = new WebSocket('ws://192.168.1.14:8080/ws?chatID=' + chatID);
     conn.onmessage = function (event) {
         var message = JSON.parse(event.data);
-        var chatbox = document.getElementById("chatbox");
-        chatbox.innerHTML += "<b>" + decodeURIComponent(message.user) + ":</b> " + message.message + "<br>";
+        addMessage(message.user, message.time, message.message);
     };
+
+    function addMessage(user, time, text) {
+        var chatbox = document.getElementById("chatbox");
+        chatbox.innerHTML += `<div class="message">
+            <span class="user">${decodeURIComponent(user)}</span>
+            <span class="time">${time}</span>
+            <div class="text">${text}</div>
+            <div class="actions">
+                <button class="edit-btn">Изменить</button>
+                <button class="delete-btn">Удалить</button>
+            </div>
+        </div>`;
+        chatbox.scrollTop = chatbox.scrollHeight; // Scroll to the bottom
+    }
 
     function sendMessage() {
         var input = document.getElementById("message");
-        conn.send(input.value);
+        if (input.value.length === 0) {
+            return;
+        }
+        const now = new Date();
+        const day = String(now.getDate()).padStart(2, '0');
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const year = now.getFullYear();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const formattedDate = `${day}.${month}.${year} ${hours}:${minutes}`;
+        console.log(`in sendmessage: ${formattedDate}`);
+
+        const messageWithTime = {
+            time: formattedDate,
+            message: input.value
+        };
+
+        conn.send(JSON.stringify(messageWithTime));
         input.value = "";
     }
+
+    // Add event listener for Enter key
+    document.getElementById("message").addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            sendMessage();
+        }
+    });
 </script>
 </html>

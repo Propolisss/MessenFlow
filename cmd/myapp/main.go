@@ -4,7 +4,7 @@ import (
 	"SimpleMessenger/internal/db"
 	"SimpleMessenger/internal/handlers"
 	"SimpleMessenger/internal/websocket"
-	_ "github.com/mattn/go-sqlite3" // Импортируем SQLite драйвер
+	_ "github.com/mattn/go-sqlite3"
 	"log"
 	"net/http"
 )
@@ -18,7 +18,7 @@ func main() {
 	}
 	http.HandleFunc("/chat", handlers.ChatPageHandler)
 	http.HandleFunc("/ws", websocket.Handler)
-	// Обработчик для корневого пути, чтобы обслуживать index.html
+
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "./static/login.html")
 	})

@@ -11,7 +11,7 @@ import (
 func GetMessagesHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		chatID := r.URL.Query().Get("chatID")
-		rows, err := db.DB.Query("SELECT user, message FROM messages WHERE chatID = ?", chatID)
+		rows, err := db.DB.Query("SELECT user, message, time FROM messages WHERE chatID = ?", chatID)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -20,7 +20,7 @@ func GetMessagesHandler(w http.ResponseWriter, r *http.Request) {
 		var messages []models.Message
 		for rows.Next() {
 			var msg models.Message
-			if err := rows.Scan(&msg.User, &msg.Message); err != nil {
+			if err := rows.Scan(&msg.User, &msg.Message, &msg.Time); err != nil {
 				log.Fatal(err)
 			}
 			messages = append(messages, msg)

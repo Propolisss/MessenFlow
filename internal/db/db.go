@@ -4,7 +4,6 @@ import "database/sql"
 
 var DB *sql.DB
 
-// Инициализация базы данных
 func InitDB() error {
 	var err error
 	DB, err = sql.Open("sqlite3", "./users.db")
@@ -20,9 +19,11 @@ func InitDB() error {
   `
 	createMessagesTableSQL := `
   CREATE TABLE IF NOT EXISTS messages (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     chatID TEXT NOT NULL,
     user TEXT NOT NULL,
-    message TEXT NOT NULL
+    message TEXT NOT NULL,
+    time TEXT NOT NULL
   );
   `
 	_, err = DB.Exec(createTableSQL)
