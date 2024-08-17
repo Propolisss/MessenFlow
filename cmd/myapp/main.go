@@ -19,12 +19,15 @@ func main() {
 	http.HandleFunc("/chat", handlers.ChatPageHandler)
 	http.HandleFunc("/ws", websocket.Handler)
 
+	http.Handle("/static/css/", http.StripPrefix("/static/css/", http.FileServer(http.Dir("static/css"))))
+	http.Handle("/static/js/", http.StripPrefix("/static/js/", http.FileServer(http.Dir("static/js"))))
+
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "./static/login.html")
+		http.ServeFile(w, r, "static/html/login.html")
 	})
 
 	http.HandleFunc("/welcome", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "./static/main.html")
+		http.ServeFile(w, r, "static/html/main.html")
 	})
 
 	http.HandleFunc("/register", handlers.RegisterHandler)

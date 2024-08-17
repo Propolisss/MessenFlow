@@ -11,6 +11,7 @@ type User struct {
 }
 
 type Message struct {
+	Id      int64  `json:"id"`
 	User    string `json:"user"`
 	Message string `json:"message"`
 	Time    string `json:"time"`

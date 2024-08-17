@@ -62,11 +62,15 @@ func handleConnection(conn *websocket.Conn, chatID, user string) {
 			continue
 		}
 		log.Printf("Received message in chat %s from user %s: %s", chatID, user, resp.Message)
-		_, err = db.DB.Exec("INSERT INTO messages (chatID, user, message, time) VALUES(?, ?, ?, ?)", chatID, user, resp.Message, resp.Time)
+		res, err := db.DB.Exec("INSERT INTO messages (chatID, user, message, time) VALUES(?, ?, ?, ?)", chatID, user, resp.Message, resp.Time)
 		if err != nil {
 			log.Fatal(err)
 		}
-		broadcastMessage(chatID, user, resp.Message, resp.Time)
+		id, err := res.LastInsertId()
+		if err != nil {
+			log.Fatal(err)
+		}
+		broadcastMessage(chatID, user, resp.Message, resp.Time, id)
 	}
 }
 
@@ -80,8 +84,9 @@ func removeConnection(conn *websocket.Conn, chatID string) {
 	}
 }
 
-func broadcastMessage(chatID, user, message, time string) {
+func broadcastMessage(chatID, user, message, time string, id int64) {
 	msg := models.Message{
+		Id:      id,
 		User:    user,
 		Message: message,
 		Time:    time,

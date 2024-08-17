@@ -12,7 +12,7 @@ func ChatPageHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	tmpl, err := template.ParseFiles("static/chat.html")
+	tmpl, err := template.ParseFiles("static/html/chat.html")
 	if err != nil {
 		http.Error(w, "Error loading template", http.StatusInternalServerError)
 		return
