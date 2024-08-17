@@ -27,5 +27,6 @@ func ChatPageHandler(w http.ResponseWriter, r *http.Request) {
 	err = tmpl.Execute(w, data)
 	if err != nil {
 		http.Error(w, "Error rendering template", http.StatusInternalServerError)
+		return
 	}
 }

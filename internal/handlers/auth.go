@@ -22,7 +22,6 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 		err = db.DB.QueryRow("SELECT COUNT(*) FROM users WHERE login = ?", user.Login).Scan(&count)
 		if err != nil {
 			log.Fatal(err)
-			return
 		}
 		if count > 0 {
 			http.Error(w, "already registered", http.StatusBadRequest)
@@ -33,7 +32,6 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			http.Error(w, "internal error", http.StatusBadRequest)
 			log.Fatal(err)
-			return
 		}
 		w.WriteHeader(http.StatusCreated)
 	} else {
@@ -53,7 +51,6 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		err = db.DB.QueryRow("SELECT count(*) FROM users WHERE login = ?", user.Login).Scan(&count)
 		if err != nil {
 			log.Fatal(err)
-			return
 		}
 		if count == 0 {
 			http.Error(w, "login isn't exist", http.StatusBadRequest)
@@ -64,7 +61,6 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		err = db.DB.QueryRow("SELECT password FROM users WHERE login = ?", user.Login).Scan(&password)
 		if err != nil {
 			log.Fatal(err)
-			return
 		}
 		if password != user.Password {
 			http.Error(w, "wrong password", http.StatusBadRequest)

@@ -12,8 +12,8 @@ fetch(url)
         console.log(data);
         if (data.messages != null) {
             data.messages.forEach(mess => {
-                console.log(mess.id);
-                addMessage(mess.user, mess.time, mess.message);
+                console.log(mess.id, mess.type);
+                addMessage(mess.id, mess.user, mess.time, mess.message);
             });
         }
     })
@@ -25,13 +25,23 @@ document.cookie = `user_login=${encodeURIComponent(sessionStorage.getItem('user_
 const conn = new WebSocket('ws://192.168.1.14:8080/ws?chatID=' + chatID);
 conn.onmessage = function (event) {
     var message = JSON.parse(event.data);
-    console.log(message.id);
-    addMessage(message.user, message.time, message.message);
+    console.log(message.id, message.type);
+    if (message.type === 'add') {
+        addMessage(message.id, message.user, message.time, message.message);
+    } else if (message.type === 'update') {
+
+    } else if (message.type === 'delete') {
+        const messageElement = document.querySelector(`.message[data-message-id="${message.id}"]`);
+        if (messageElement) {
+            messageElement.remove();
+        }
+    }
 };
 
-function addMessage(user, time, text) {
+function addMessage(id, user, time, text) {
     var chatbox = document.getElementById("chatbox");
-    chatbox.innerHTML += `<div class="message">
+    chatbox.innerHTML += `
+        <div class="message" data-message-id="${id}">
             <span class="user">${decodeURIComponent(user)}</span>
             <span class="time">${time}</span>
             <div class="text">${text}</div>
@@ -40,7 +50,38 @@ function addMessage(user, time, text) {
                 <button class="delete-btn">Удалить</button>
             </div>
         </div>`;
-    chatbox.scrollTop = chatbox.scrollHeight; // Scroll to the bottom
+
+    chatbox.scrollTop = chatbox.scrollHeight;
+}
+
+document.getElementById('chatbox').addEventListener('click', function (event) {
+    if (event.target.className === 'delete-btn') {
+        const messageElement = event.target.closest('.message');
+        const messageId = messageElement.getAttribute('data-message-id');
+        console.log(`in deleteButtonClick: ${messageId}`);
+        deleteMessage(messageId);
+        messageElement.remove();
+    }
+});
+
+function deleteMessage(messageId) {
+    console.log(messageId);
+    fetch(host + `delete_message?id=${messageId}`, {
+        method: 'DELETE',
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`database error: can not delete message with messageId: ${messageId}`);
+            }
+            const deleteMessage = {
+                type: 'delete',
+                id: parseInt(messageId),
+            };
+            conn.send(JSON.stringify(deleteMessage));
+        })
+        .catch(error => {
+            alert(error);
+        });
 }
 
 function sendMessage() {
@@ -59,7 +100,8 @@ function sendMessage() {
 
     const messageWithTime = {
         time: formattedDate,
-        message: input.value
+        message: input.value,
+        type: "add",
     };
 
     conn.send(JSON.stringify(messageWithTime));

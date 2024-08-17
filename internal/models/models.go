@@ -15,11 +15,7 @@ type Message struct {
 	User    string `json:"user"`
 	Message string `json:"message"`
 	Time    string `json:"time"`
-}
-
-type ResponseFromClient struct {
-	Time    string `json:"time"`
-	Message string `json:"message"`
+	Type    string `json:"type"`
 }
 
 type Messages struct {
