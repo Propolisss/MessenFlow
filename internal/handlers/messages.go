@@ -3,6 +3,7 @@ package handlers
 import (
 	"SimpleMessenger/internal/db"
 	"SimpleMessenger/internal/models"
+	"database/sql"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -17,7 +18,12 @@ func GetMessagesHandler(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			log.Fatal(err)
 		}
-		defer rows.Close()
+		defer func(rows *sql.Rows) {
+			err := rows.Close()
+			if err != nil {
+				log.Fatal(err)
+			}
+		}(rows)
 
 		var messages []models.Message
 		for rows.Next() {
@@ -60,7 +66,6 @@ func DeleteMessageHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	fmt.Println(idInt)
-	// Удаление сообщения из базы данных
 	result, err := db.DB.Exec("DELETE FROM messages WHERE id = ?", idInt)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -78,9 +83,37 @@ func DeleteMessageHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Отправка успешного ответа
 	w.WriteHeader(http.StatusOK)
 	_, err = w.Write([]byte("Message deleted"))
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+}
+
+func UpdateMessageHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPut {
+		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
+		return
+	}
+	messageId := r.URL.Query().Get("message_id")
+	new_text := r.URL.Query().Get("new_text")
+	if messageId == "" || new_text == "" {
+		http.Error(w, "Missing parameters", http.StatusBadRequest)
+		return
+	}
+	idInt, err := strconv.Atoi(messageId)
+	if err != nil {
+		http.Error(w, "Invalid message ID", http.StatusBadRequest)
+		return
+	}
+	_, err = db.DB.Exec("UPDATE messages SET message = ? WHERE id = ?", new_text, idInt)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	_, err = w.Write([]byte("Message updated"))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

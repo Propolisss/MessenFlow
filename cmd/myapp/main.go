@@ -35,6 +35,7 @@ func main() {
 	http.HandleFunc("/get_users", handlers.GetUsersHandler)
 	http.HandleFunc("/get_messages", handlers.GetMessagesHandler)
 	http.HandleFunc("/delete_message", handlers.DeleteMessageHandler)
+	http.HandleFunc("/update_message", handlers.UpdateMessageHandler)
 	err = http.ListenAndServe("192.168.1.14:8080", nil)
 	if err != nil {
 		log.Fatal(err)

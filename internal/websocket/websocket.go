@@ -38,7 +38,12 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	fmt.Println(chatConnections)
-	defer conn.Close()
+	defer func(conn *websocket.Conn) {
+		err := conn.Close()
+		if err != nil {
+			log.Println("Failed to close WebSocket:", err)
+		}
+	}(conn)
 
 	handleConnection(conn, chatID, user)
 }
@@ -73,7 +78,7 @@ func handleConnection(conn *websocket.Conn, chatID, user string) {
 				log.Fatal(err)
 			}
 			broadcastMessage(chatID, user, message.Message, message.Time, message.Type, id)
-		} else if message.Type == "delete" {
+		} else {
 			broadcastMessage(chatID, user, message.Message, message.Time, message.Type, message.Id)
 		}
 	}

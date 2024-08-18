@@ -29,7 +29,9 @@ conn.onmessage = function (event) {
     if (message.type === 'add') {
         addMessage(message.id, message.user, message.time, message.message);
     } else if (message.type === 'update') {
-
+        const messageElement = document.querySelector(`.message[data-message-id="${message.id}"]`);
+        const textElement = messageElement.querySelector('.text');
+        textElement.innerText = message.message;
     } else if (message.type === 'delete') {
         const messageElement = document.querySelector(`.message[data-message-id="${message.id}"]`);
         if (messageElement) {
@@ -54,6 +56,32 @@ function addMessage(id, user, time, text) {
     chatbox.scrollTop = chatbox.scrollHeight;
 }
 
+let currentlyEditingForm = null;
+let currentHtmlInner = null;
+let currentMessageId = null;
+function updateMessage(messageId, currentMessage) {
+    console.log(`in updateMessage: ${messageId},${currentMessage}`);
+
+    fetch(host + `update_message?message_id=${messageId}&new_text=${currentMessage}`, {
+        method: 'PUT',
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`database error: can not update message with messageId: ${messageId}`);
+            }
+            const updateMessage = {
+                type: 'update',
+                id: parseInt(messageId),
+                message: currentMessage,
+            };
+            conn.send(JSON.stringify(updateMessage));
+        })
+        .catch(error => {
+            alert(error);
+        });
+}
+
+// TODO: fix the logic when a new message is added
 document.getElementById('chatbox').addEventListener('click', function (event) {
     if (event.target.className === 'delete-btn') {
         const messageElement = event.target.closest('.message');
@@ -61,6 +89,41 @@ document.getElementById('chatbox').addEventListener('click', function (event) {
         console.log(`in deleteButtonClick: ${messageId}`);
         deleteMessage(messageId);
         messageElement.remove();
+    } else if (event.target.className === 'edit-btn') {
+        if (currentlyEditingForm) {
+            const newText = currentlyEditingForm.querySelector('input').value;
+            console.log(newText, currentlyEditingForm);
+            currentlyEditingForm.remove();
+            currentHtmlInner.innerHTML = '';
+            currentHtmlInner.innerText = newText;
+            updateMessage(currentMessageId, newText);
+        }
+
+        const messageElement = event.target.closest('.message');
+        const messageId = messageElement.getAttribute('data-message-id');
+        const textElement = messageElement.querySelector('.text');
+        const currentText = textElement.innerText;
+
+
+        const editForm = document.createElement('form');
+        editForm.innerHTML = `
+            <input type="text" value="${currentText}" />
+            <button type="submit">Save</button>
+        `;
+
+        textElement.innerHTML = '';
+        textElement.appendChild(editForm);
+
+        currentlyEditingForm = editForm;
+        currentHtmlInner = textElement;
+        currentMessageId = messageId;
+
+        editForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const newText = editForm.querySelector('input').value;
+            console.log(`new text: ${newText}`);
+            updateMessage(messageId, newText);
+        });
     }
 });
 
@@ -89,6 +152,14 @@ function sendMessage() {
     if (input.value.length === 0) {
         return;
     }
+    if (currentlyEditingForm) {
+        const newText = currentlyEditingForm.querySelector('input').value;
+        console.log(newText, currentlyEditingForm);
+        currentlyEditingForm.remove();
+        currentHtmlInner.innerHTML = '';
+        currentHtmlInner.innerText = newText;
+        updateMessage(currentMessageId, newText);
+    }
     const now = new Date();
     const day = String(now.getDate()).padStart(2, '0');
     const month = String(now.getMonth() + 1).padStart(2, '0');
@@ -108,7 +179,6 @@ function sendMessage() {
     input.value = "";
 }
 
-// Add event listener for Enter key
 document.getElementById("message").addEventListener("keydown", function (event) {
     if (event.key === "Enter") {
         event.preventDefault();

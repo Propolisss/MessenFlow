@@ -3,6 +3,7 @@ package handlers
 import (
 	"SimpleMessenger/internal/db"
 	"SimpleMessenger/internal/models"
+	"database/sql"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -21,7 +22,12 @@ func GetUsersHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		var users []string
-		defer rows.Close()
+		defer func(rows *sql.Rows) {
+			err := rows.Close()
+			if err != nil {
+				log.Fatal(err)
+			}
+		}(rows)
 		for rows.Next() {
 			var login string
 			err = rows.Scan(&login)
@@ -36,6 +42,10 @@ func GetUsersHandler(w http.ResponseWriter, r *http.Request) {
 		response := models.Response{
 			Users: users,
 		}
-		json.NewEncoder(w).Encode(response)
+		err = json.NewEncoder(w).Encode(response)
+		if err != nil {
+			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			return
+		}
 	}
 }
