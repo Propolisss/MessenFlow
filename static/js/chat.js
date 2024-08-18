@@ -43,16 +43,19 @@ conn.onmessage = function (event) {
 function addMessage(id, user, time, text) {
     var chatbox = document.getElementById("chatbox");
     var actionsHtml = '';
+    var messageClass = '';
+
     if (user === sessionStorage.getItem('user_login')) {
         actionsHtml = `
             <div class="actions">
                 <button class="edit-btn">Изменить</button>
                 <button class="delete-btn">Удалить</button>
             </div>`;
+        messageClass = 'own-message';
     }
 
     chatbox.innerHTML += `
-        <div class="message" data-message-id="${id}">
+        <div class="message ${messageClass}" data-message-id="${id}">
             <span class="user">${decodeURIComponent(user)}</span>
             <span class="time">${time}</span>
             <div class="text">${text}</div>
@@ -65,6 +68,7 @@ function addMessage(id, user, time, text) {
 let currentlyEditingForm = null;
 let currentHtmlInner = null;
 let currentMessageId = null;
+
 function updateMessage(messageId, currentMessage) {
     console.log(`in updateMessage: ${messageId},${currentMessage}`);
 
