@@ -48,9 +48,13 @@
 </details>
 
 <!-- ABOUT THE PROJECT -->
+
 ## About The Project
 
-MessenFlow is a basic yet functional messenger application that allows users to register, log in, and chat with others. Users can send, edit, and delete their own messages in real-time, leveraging WebSocket for instant communication. The backend is powered by Go, with a simple frontend built using HTML, CSS, and JavaScript. SQLite is used for data storage, keeping the application lightweight and easy to set up.
+MessenFlow is a basic yet functional messenger application that allows users to register, log in, and chat with others.
+Users can send, edit, and delete their own messages in real-time, leveraging WebSocket for instant communication. The
+backend is powered by Go, with a simple frontend built using HTML, CSS, and JavaScript. SQLite is used for data storage,
+keeping the application lightweight and easy to set up.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -66,6 +70,7 @@ MessenFlow is a basic yet functional messenger application that allows users to 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- GETTING STARTED -->
+
 ## Getting Started
 
 To get a local copy of this project up and running, follow the steps below.
@@ -93,13 +98,16 @@ Ensure you have Go installed on your machine. You can download it from [Go's off
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- USAGE EXAMPLES -->
+
 ## Usage
 
-Once the server is running, you can register a new user, log in, and start sending messages to other registered users. You can also edit or delete your messages.
+Once the server is running, you can register a new user, log in, and start sending messages to other registered users.
+You can also edit or delete your messages.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- ROADMAP -->
+
 ## Roadmap
 
 - [ ] User authentication improvements
@@ -110,16 +118,20 @@ Once the server is running, you can register a new user, log in, and start sendi
 - [ ] Add voice and video messages
 - [ ] Add password encryption
 
-See the [open issues](https://github.com/Propolisss/MessenFlow/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/Propolisss/MessenFlow/issues) for a full list of proposed features (and known
+issues).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- CONTRIBUTING -->
+
 ## Contributing
 
-Contributions are what make the open source community an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+Contributions are what make the open source community an amazing place to learn, inspire, and create. Any contributions
+you make are **greatly appreciated**.
 
-If you have a suggestion that would make this project better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement". Don't forget to give the project a star! Thanks again!
+If you have a suggestion that would make this project better, please fork the repo and create a pull request. You can
+also simply open an issue with the tag "enhancement". Don't forget to give the project a star! Thanks again!
 
 1. Fork the Project
 2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
@@ -136,6 +148,7 @@ If you have a suggestion that would make this project better, please fork the re
 </a>
 
 <!-- LICENSE -->
+
 ## License
 
 Distributed under the MIT License. See `LICENSE.txt` for more information.
@@ -143,27 +156,49 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- MARKDOWN LINKS & IMAGES -->
+
 [contributors-shield]: https://img.shields.io/github/contributors/Propolisss/MessenFlow.svg?style=for-the-badge
+
 [contributors-url]: https://github.com/Propolisss/MessenFlow/graphs/contributors
+
 [forks-shield]: https://img.shields.io/github/forks/Propolisss/MessenFlow.svg?style=for-the-badge
+
 [forks-url]: https://github.com/Propolisss/MessenFlow/network/members
+
 [stars-shield]: https://img.shields.io/github/stars/Propolisss/MessenFlow.svg?style=for-the-badge
+
 [stars-url]: https://github.com/Propolisss/MessenFlow/stargazers
+
 [issues-shield]: https://img.shields.io/github/issues/Propolisss/MessenFlow.svg?style=for-the-badge
+
 [issues-url]: https://github.com/Propolisss/MessenFlow/issues
+
 [license-shield]: https://img.shields.io/github/license/Propolisss/MessenFlow.svg?style=for-the-badge
+
 [license-url]: https://github.com/Propolisss/MessenFlow/blob/master/LICENSE.txt
+
 [Go-pic]: https://img.shields.io/badge/Go-00ADD8?style=for-the-badge&logo=go&logoColor=white
+
 [HTML-pic]: https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white
+
 [JS-pic]: https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black
+
 [CSS-pic]: https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white
+
 [Websocket-pic]: https://img.shields.io/badge/WebSocket-007ACC?style=for-the-badge&logo=websocket&logoColor=white
+
 [SQLite-pic]: https://img.shields.io/badge/SQLite-003B57?style=for-the-badge&logo=sqlite&logoColor=white
+
 [Go-url]: https://golang.org/
+
 [SQLite-url]: https://www.sqlite.org/
+
 [WebSocket-url]: https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API
+
 [HTML-url]: https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5
+
 [CSS-url]: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS3
+
 [JS-url]: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 
 ---
