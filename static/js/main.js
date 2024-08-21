@@ -24,6 +24,7 @@ fetch(url)
             button.textContent = 'Написать сообщение';
             button.onclick = () => {
                 const chatID = generateChatID(curr_login, user);
+                sessionStorage.setItem('friend_login', decodeURIComponent(user));
                 window.location.href = `${host}chat?chatID=${chatID}`;
             };
 

@@ -56,6 +56,56 @@ Users can send, edit, and delete their own messages in real-time, leveraging Web
 backend is powered by Go, with a simple frontend built using HTML, CSS, and JavaScript. SQLite is used for data storage,
 keeping the application lightweight and easy to set up.
 
+## Application Functionality
+
+### Log in
+
+Below is an example of the login process:
+
+| ![Log in](media/loging.gif) |
+|:---------------------------:|
+|       *Login process*       |
+
+### Chatting
+
+Example of interaction in the chat:
+
+| ![Chatting](media/chatting.gif) |
+|:-------------------------------:|
+|       *Chat interaction*        |
+
+### Updating Message
+
+Shows how to update a message:
+
+| ![Updating message](media/updating.gif) |
+|:---------------------------------------:|
+|          *Updating a message*           |
+
+### Deleting Message
+
+Example of deleting a message:
+
+| ![Deleting message](media/deleting.gif) |
+|:---------------------------------------:|
+|          *Deleting a message*           |
+
+### Mobile Screen
+
+Here's how the application looks on a mobile device:
+
+| ![Mobile screen](media/mobile.png) |
+|:----------------------------------:|
+|   *Application on mobile screen*   |
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## Features
+
+- Real-time messaging using WebSocket
+- User registration and authentication
+- Edit and delete messages
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Built With
@@ -117,6 +167,7 @@ You can also edit or delete your messages.
 - [ ] Add online/offline status
 - [ ] Add voice and video messages
 - [ ] Add password encryption
+- [ ] Refactor chatID system
 
 See the [open issues](https://github.com/Propolisss/MessenFlow/issues) for a full list of proposed features (and known
 issues).
