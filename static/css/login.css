@@ -16,13 +16,16 @@ body {
     width: 300px;
 }
 
-h2 {
-    margin-bottom: 20px;
+.form-container {
     text-align: center;
 }
 
+h2 {
+    margin-bottom: 20px;
+}
+
 input {
-    width: 100%;
+    width: calc(100% - 22px);
     padding: 10px;
     margin: 10px 0;
     border: 1px solid #ccc;
@@ -37,6 +40,7 @@ button {
     background-color: #28a745;
     color: #fff;
     cursor: pointer;
+    margin-top: 10px;
 }
 
 button:hover {
@@ -44,7 +48,6 @@ button:hover {
 }
 
 .toggle {
-    text-align: center;
     margin-top: 20px;
 }
 
