@@ -1,9 +1,9 @@
 package main
 
 import (
-	"SimpleMessenger/internal/db"
-	"SimpleMessenger/internal/handlers"
-	"SimpleMessenger/internal/websocket"
+	"MessenFlow/internal/db"
+	"MessenFlow/internal/handlers"
+	"MessenFlow/internal/websocket"
 	_ "github.com/mattn/go-sqlite3"
 	"log"
 	"net/http"

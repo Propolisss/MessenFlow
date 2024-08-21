@@ -1,4 +1,4 @@
-module SimpleMessenger
+module MessenFlow
 
 go 1.23.0
 

@@ -1,8 +1,8 @@
 package websocket
 
 import (
-	"SimpleMessenger/internal/db"
-	"SimpleMessenger/internal/models"
+	"MessenFlow/internal/db"
+	"MessenFlow/internal/models"
 	"encoding/json"
 	"fmt"
 	"github.com/gorilla/websocket"
