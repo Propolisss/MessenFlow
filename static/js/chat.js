@@ -100,6 +100,7 @@ document.getElementById('chatbox').addEventListener('click', function (event) {
         deleteMessage(messageId);
         messageElement.remove();
     } else if (event.target.className === 'edit-btn') {
+        console.log(`in edit-btn: ${currentlyEditingForm}`);
         if (currentlyEditingForm) {
             const newText = currentlyEditingForm.querySelector('input').value;
             console.log(newText, currentlyEditingForm);
@@ -132,6 +133,9 @@ document.getElementById('chatbox').addEventListener('click', function (event) {
             e.preventDefault();
             const newText = editForm.querySelector('input').value;
             console.log(`new text: ${newText}`);
+            currentlyEditingForm = null;
+            currentHtmlInner = null;
+            currentMessageId = null;
             updateMessage(messageId, newText);
         });
     }
@@ -169,6 +173,9 @@ function sendMessage() {
         currentHtmlInner.innerHTML = '';
         currentHtmlInner.innerText = newText;
         updateMessage(currentMessageId, newText);
+        currentlyEditingForm = null;
+        currentHtmlInner = null;
+        currentMessageId = null;
     }
     const now = new Date();
     const day = String(now.getDate()).padStart(2, '0');
