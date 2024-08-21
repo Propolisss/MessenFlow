@@ -245,7 +245,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 [SQLite-url]: https://www.sqlite.org/
 
-[WebSocket-url]: https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API
+[WebSocket-url]: https://github.com/gorilla/websocket 
 
 [HTML-url]: https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5
 
