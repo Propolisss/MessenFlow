@@ -75,13 +75,13 @@ Example of interaction in the chat:
 |:-------------------------------:|
 |       *Chat interaction*        |
 
-### Updating Message
+### Editing Message
 
-Shows how to update a message:
+Shows how to edit a message:
 
 | ![Updating message](media/updating.gif) |
 |:---------------------------------------:|
-|          *Updating a message*           |
+|           *Editing a message*           |
 
 ### Deleting Message
 
@@ -161,14 +161,15 @@ You can also edit or delete your messages.
 
 ## Roadmap
 
+- [x] Add online/offline status
 - [ ] User authentication improvements
 - [ ] Implementing user roles and permissions
 - [ ] Adding file attachment support
 - [ ] Enhance UI/UX with modern frameworks
-- [ ] Add online/offline status
 - [ ] Add voice and video messages
 - [ ] Add password encryption
 - [ ] Refactor chatID system
+- [ ] Add writing... status
 
 See the [open issues](https://github.com/Propolisss/MessenFlow/issues) for a full list of proposed features (and known
 issues).

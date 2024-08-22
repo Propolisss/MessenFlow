@@ -37,8 +37,33 @@ conn.onmessage = function (event) {
         if (messageElement) {
             messageElement.remove();
         }
+    } else if (message.type === 'status') {
+        console.log(message.user, message.online);
+        updateStatus(message.online);
     }
 };
+
+function updateStatus(online) {
+    const chatTitle = document.getElementById('chat-title');
+    const statusIndicator = document.createElement('span');
+    statusIndicator.id = 'status-indicator';
+    if (online) {
+        statusIndicator.innerText = ' В сети';
+        statusIndicator.classList.add('online');
+        statusIndicator.classList.remove('offline');
+    } else {
+        statusIndicator.innerText = ' Не в сети';
+        statusIndicator.classList.add('offline');
+        statusIndicator.classList.remove('online');
+    }
+    //Удаляем существующий индикатор статуса, если он есть
+    const existingStatusIndicator = chatTitle.querySelector('#status-indicator');
+    if (existingStatusIndicator) {
+        chatTitle.removeChild(existingStatusIndicator);
+    }
+    // Добавляем новый индикатор статуса
+    chatTitle.appendChild(statusIndicator);
+}
 
 function addMessage(id, user, time, text) {
     var chatbox = document.getElementById("chatbox");

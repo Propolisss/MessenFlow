@@ -34,6 +34,7 @@ body {
 .message .user {
     font-weight: bold;
     color: #333;
+    display: inline-block;
 }
 
 .message .time {
@@ -90,4 +91,17 @@ button {
 
 button:hover {
     background-color: #0056b3;
+}
+
+#status-indicator {
+    font-size: 0.8em;
+    margin-left: 10px;
+}
+
+#status-indicator.online {
+    color: green;
+}
+
+#status-indicator.offline {
+    color: gray;
 }

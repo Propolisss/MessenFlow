@@ -18,6 +18,12 @@ type Message struct {
 	Type    string `json:"type"`
 }
 
+type Status struct {
+	Type   string `json:"type"`
+	Online bool   `json:"online"`
+	User   string `json:"user"`
+}
+
 type Messages struct {
 	Messages []Message `json:"messages"`
 }

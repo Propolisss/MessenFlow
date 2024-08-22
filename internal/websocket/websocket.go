@@ -49,15 +49,19 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 }
 
 var chatConnections = make(map[string][]*websocket.Conn)
+var chatUsers = make(map[*websocket.Conn]string)
 
 func handleConnection(conn *websocket.Conn, chatID, user string) {
 	chatConnections[chatID] = append(chatConnections[chatID], conn)
+	chatUsers[conn] = user
+	changeStatus(chatID, user, true, conn)
 	fmt.Println(chatConnections[chatID])
 	for {
 		_, p, err := conn.ReadMessage()
 		if err != nil {
 			log.Println("Read error:", err)
 			removeConnection(conn, chatID)
+			changeStatus(chatID, user, false, conn)
 			break
 		}
 		var message models.Message
@@ -84,8 +88,48 @@ func handleConnection(conn *websocket.Conn, chatID, user string) {
 	}
 }
 
+func changeStatus(chatID, user string, b bool, ws *websocket.Conn) {
+	status := models.Status{
+		Type:   "status",
+		Online: b,
+		User:   user,
+	}
+	jsonStatus, err := json.Marshal(status)
+	if err != nil {
+		log.Println("JSON marshal error:", err)
+		return
+	}
+	for _, conn := range chatConnections[chatID] {
+		fmt.Println(chatUsers[conn], user)
+		if chatUsers[conn] != user {
+			err := conn.WriteMessage(websocket.TextMessage, jsonStatus)
+			if err != nil {
+				log.Println("Write error in change status:", err)
+				removeConnection(conn, chatID)
+			}
+			st := models.Status{
+				Type:   "status",
+				Online: true,
+				User:   chatUsers[conn],
+			}
+			jsSt, err := json.Marshal(st)
+			if err != nil {
+				log.Println("JSON marshal error in change status:", err)
+				return
+			}
+			err = ws.WriteMessage(websocket.TextMessage, jsSt)
+			if err != nil {
+				log.Println("Write error in change status:", err)
+				removeConnection(ws, chatID)
+			}
+		}
+	}
+}
+
 func removeConnection(conn *websocket.Conn, chatID string) {
+	fmt.Println("removed: ", conn, chatID)
 	connections := chatConnections[chatID]
+	delete(chatUsers, conn)
 	for i, c := range connections {
 		if c == conn {
 			chatConnections[chatID] = append(connections[:i], connections[i+1:]...)
