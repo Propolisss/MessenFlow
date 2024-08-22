@@ -204,7 +204,7 @@ also simply open an issue with the tag "enhancement". Don't forget to give the p
 
 ## License
 
-Distributed under the MIT License. See `LICENSE.txt` for more information.
+Distributed under the MIT License. See `LICENSE` for more information.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -228,7 +228,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 [license-shield]: https://img.shields.io/github/license/Propolisss/MessenFlow.svg?style=for-the-badge
 
-[license-url]: https://github.com/Propolisss/MessenFlow/blob/master/LICENSE.txt
+[license-url]: https://github.com/Propolisss/MessenFlow/blob/master/LICENSE
 
 [Go-pic]: https://img.shields.io/badge/Go-00ADD8?style=for-the-badge&logo=go&logoColor=white
 
