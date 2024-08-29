@@ -5,6 +5,7 @@ import (
 	"MessenFlow/internal/models"
 	"encoding/json"
 	"fmt"
+	"github.com/spf13/viper"
 	"log"
 	"net/http"
 )
@@ -66,8 +67,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "wrong password", http.StatusBadRequest)
 			return
 		}
-
-		http.Redirect(w, r, "http://192.168.1.14:8080/welcome", 302)
+		http.Redirect(w, r, "http://"+viper.GetString("address")+":"+viper.GetString("port")+"/welcome", 302)
 	} else {
 		http.Error(w, "wrong method", http.StatusBadRequest)
 	}

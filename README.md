@@ -130,23 +130,47 @@ To get a local copy of this project up and running, follow the steps below.
 
 Ensure you have Go installed on your machine. You can download it from [Go's official website](https://golang.org/dl/).
 
+---
+
 ### Installation
 
-1. Clone the repository:
+1. **Clone the repository:**
    ```sh
    git clone https://github.com/Propolisss/MessenFlow.git
    ```
-2. Navigate to the project directory:
+2. **Navigate to the project directory:**
    ```sh
    cd MessenFlow
    ```
-3. Build and run the project:
+3. **Build and run the project:**
+
+   You can specify the IP address and port on which the application will run. If not provided, the default values will
+   be used.
+
+   **To run with default settings (IP: `localhost`, Port: `8080`):**
    ```sh
-   go run main.go
+   go run cmd/myapp/main.go
    ```
-4. Open your browser and navigate to `http://localhost:8080`.
+
+   **To run with custom IP and Port:**
+   ```sh
+   go run cmd/myapp/main.go --adress=<your_ip> --port=<your_port>
+   ```
+   Replace `<your_ip>` with the desired IP address (e.g., `127.0.0.1`), and `<your_port>` with the desired port number (
+   e.g., `8081`).
+
+4. **Open your browser and navigate to the specified address:**
+   ```sh
+   http://<your_ip>:<your_port>
+   ```
+   If you used the default settings, navigate to:
+   ```sh
+   http://localhost:8080
+   ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+---
 
 <!-- USAGE EXAMPLES -->
 
@@ -246,7 +270,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 [SQLite-url]: https://www.sqlite.org/
 
-[WebSocket-url]: https://github.com/gorilla/websocket 
+[WebSocket-url]: https://github.com/gorilla/websocket
 
 [HTML-url]: https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5
 
