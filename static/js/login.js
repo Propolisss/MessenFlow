@@ -17,18 +17,20 @@ fetch('/get_socket')
         alert(error);
     });
 
+
+function toggleForm(formType) {
+    if (formType === 'login') {
+        document.getElementById('login-form').style.display = 'block';
+        document.getElementById('register-form').style.display = 'none';
+    } else if (formType === 'register') {
+        document.getElementById('login-form').style.display = 'none';
+        document.getElementById('register-form').style.display = 'block';
+    }
+}
+
 function run() {
     console.log("hello");
 
-    function toggleForm(formType) {
-        if (formType === 'login') {
-            document.getElementById('login-form').style.display = 'block';
-            document.getElementById('register-form').style.display = 'none';
-        } else if (formType === 'register') {
-            document.getElementById('login-form').style.display = 'none';
-            document.getElementById('register-form').style.display = 'block';
-        }
-    }
 
     document.getElementById('login_button').addEventListener('click', function () {
         if (document.getElementById('login-nickname').value.length === 0) {
