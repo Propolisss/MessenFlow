@@ -154,7 +154,7 @@ Ensure you have Go installed on your machine. You can download it from [Go's off
 
    **To run with custom IP and Port:**
    ```sh
-   go run cmd/myapp/main.go --adress=<your_ip> --port=<your_port>
+   go run cmd/myapp/main.go --address=<your_ip> --port=<your_port>
    ```
    Replace `<your_ip>` with the desired IP address (e.g., `127.0.0.1`), and `<your_port>` with the desired port number (
    e.g., `8081`).
