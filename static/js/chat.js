@@ -116,6 +116,9 @@ function run() {
             });
     }
 
+    document.getElementById('sendMessage').addEventListener('click', sendMessage);
+
+
 // TODO: fix the logic when a new message is added
     document.getElementById('chatbox').addEventListener('click', function (event) {
         if (event.target.className === 'delete-btn') {
